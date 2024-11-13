@@ -65,7 +65,7 @@ jobs:
               last_pr_id=$(gh pr list --json id --head upstream-main | jq '.[0].id')
             fi
 
-            echo "id=${last_pr_id}" >> $GITHUB_TOKEN
+            echo "id=${last_pr_id}" >> $GITHUB_OUTPUT
           fi
 
       - name: Slack Notification
