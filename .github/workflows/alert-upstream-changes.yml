@@ -52,6 +52,7 @@ jobs:
             if [[ $last_pr_id == 'null' ]]
             then
               gh pr create \
+                --repo ${{ github.repository }} \
                 --base main \
                 --body "There are changes in the upstream repository that you should release." \
                 --head upstream-main \
