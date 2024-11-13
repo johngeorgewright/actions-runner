@@ -48,7 +48,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | # shell
           getPRNumber() {
-            echo "$(gh pr list --json number --head upstream-main | jq '.[0].number')"
+            gh pr list \
+              --repo ${{ github.repository }} \
+              --json number \
+              --head upstream-main \
+            | jq '.[0].number'
           }
 
           if [[ $(git rev-list --count main..upstream-main) > 0 ]]
