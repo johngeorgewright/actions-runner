@@ -66,7 +66,7 @@ jobs:
               gh pr create \
                 --repo ${{ github.repository }} \
                 --base main \
-                --body "There are changes in the upstream repository that you should release." \
+                --body "There are changes in the upstream repository that you should release. Once merged, please run the [publish-image workflow](https://github.com/${{ github.repository }}/actions/workflows/publish-image.yml)". \
                 --head upstream-main \
                 --title "Pulling upstream changes"
 
