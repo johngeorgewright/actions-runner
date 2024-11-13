@@ -9,6 +9,9 @@ jobs:
   check-for-updates:
     name: Check for updates
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,8 +43,9 @@ jobs:
           git pull upstream main
 
       - name: Open PR
+        id: pr
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | # shell
           if [[ $(git rev-list --count main..upstream-main) > 0 ]]
           then
@@ -57,5 +61,19 @@ jobs:
                 --body "There are changes in the upstream repository that you should release." \
                 --head upstream-main \
                 --title "Pulling upstream changes"
+
+              last_pr_id=$(gh pr list --json id --head upstream-main | jq '.[0].id')
             fi
+
+            echo "id=${last_pr_id}" >> $GITHUB_TOKEN
           fi
+
+      - name: Slack Notification
+        if: steps.pr.outputs.id != ''
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_ICON_EMOJI: ':octocat:'
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: ${{ github.repository }}
+          SLACK_MESSAGE: There are changes in the upstream repository that you should add to your Arc Runner. <https://github.com/${{ github.repository }}/pull/${{ steps.pr.outputs.id }}|View the PR>
+          SLACK_USERNAME: GitHub Arc
