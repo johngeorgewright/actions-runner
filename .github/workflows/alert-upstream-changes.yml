@@ -47,11 +47,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | # shell
+          getPRNumber() {
+            echo "$(gh pr list --json number --head upstream-main | jq '.[0].number')"
+          }
+
           if [[ $(git rev-list --count main..upstream-main) > 0 ]]
           then
             git push --force origin upstream-main
 
-            last_pr_id=$(gh pr list --json id --head upstream-main | jq '.[0].id')
+            last_pr_id=$( getPRNumber )
 
             if [[ $last_pr_id == 'null' ]]
             then
@@ -62,10 +66,10 @@ jobs:
                 --head upstream-main \
                 --title "Pulling upstream changes"
 
-              last_pr_id=$(gh pr list --json id --head upstream-main | jq '.[0].id')
+              echo "id=$( getPRNumber )" >> $GITHUB_OUTPUT
+            else
+              echo "id=${last_pr_id}" >> $GITHUB_OUTPUT
             fi
-
-            echo "id=${last_pr_id}" >> $GITHUB_OUTPUT
           fi
 
       - name: Slack Notification
