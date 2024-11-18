@@ -111,9 +111,13 @@ RUN curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key \
         | tee /etc/apt/sources.list.d/kubernetes.list \
     && chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
+# Git LFS repo
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
         gh \
+        git-lfs \
         kubectl \
     && rm -rf /var/lib/apt/lists/*
 
