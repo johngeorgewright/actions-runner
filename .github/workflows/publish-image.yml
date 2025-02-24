@@ -28,7 +28,7 @@ jobs:
         env:
           RUNNER_VERSION: ${{ github.event.inputs.runnerVersion }}
         with:
-          script: |
+          script: | #javascript
             const fs = require('fs');
             const inputRunnerVersion = process.env.RUNNER_VERSION;
             if (inputRunnerVersion) {
@@ -39,6 +39,9 @@ jobs:
             const runnerVersion = fs.readFileSync('${{ github.workspace }}/src/runnerversion', 'utf8').replace(/\n$/g, '')
             console.log(`Using runner version ${runnerVersion}`)
             core.setOutput('version', runnerVersion);
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
