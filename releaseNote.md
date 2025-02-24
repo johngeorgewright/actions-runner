@@ -1,17 +1,23 @@
 ## What's Changed
+* Fix name of generated of artifact builds from GitHub workflow for arm artifacts by @satmandu in https://github.com/actions/runner/pull/3568
+* Ignore error when fail to report worker crash. by @TingluoHuang in https://github.com/actions/runner/pull/3588
+* Fix null ref in 'OnEventWritten()' by @TingluoHuang in https://github.com/actions/runner/pull/3593
+* Send stepNumber for annotation to run-service by @TingluoHuang in https://github.com/actions/runner/pull/3614
+* Enable nuget audit. by @TingluoHuang in https://github.com/actions/runner/pull/3615
+* Update dotnet install script. by @TingluoHuang in https://github.com/actions/runner/pull/3659
+* Print immutable action package details in set up job logs by @heavymachinery in https://github.com/actions/runner/pull/3645
+* Update dotnet sdk to latest version @8.0.405 by @github-actions in https://github.com/actions/runner/pull/3666
+* Upgrade `buildx` from `0.18.0` to `0.19.3` (critical CVE) by @MPV in https://github.com/actions/runner/pull/3647
+* Upgrade `docker` from `27.3.1` to `27.4.1` by @MPV in https://github.com/actions/runner/pull/3648
+* Bump Microsoft.NET.Test.Sdk from 17.8.0 to 17.12.0 in /src by @dependabot in https://github.com/actions/runner/pull/3584
+* Bump docker/setup-buildx-action from 2 to 3 by @dependabot in https://github.com/actions/runner/pull/3564
+* Bump github/codeql-action from 2 to 3 by @dependabot in https://github.com/actions/runner/pull/3555
+* Bump Moq from 4.20.70 to 4.20.72 in /src by @dependabot in https://github.com/actions/runner/pull/3672
 
-- Adding Snapshot additional mapping tokens https://github.com/actions/runner/pull/3468
-- Create launch httpclient using the right handler and setting https://github.com/actions/runner/pull/3476
-- Fix missing default user-agent for jitconfig runner https://github.com/actions/runner/pull/3473
-- Cleanup back-compat code for interpreting Run Service status codes https://github.com/actions/runner/pull/3456
-- Add runner or worker to the useragent https://github.com/actions/runner/pull/3457
-- Handle Error Body in Responses from Broker https://github.com/actions/runner/pull/3454
-- Fix issues for composite actions (Run Service flow) https://github.com/actions/runner/pull/3446
-- Trace GitHub RequestId to log https://github.com/actions/runner/pull/3442
-- Add `jq`, `git`, `unzip` and `curl` to default packages installed https://github.com/actions/runner/pull/3056
-- Add pid to user-agent and session owner https://github.com/actions/runner/pull/3432
+## New Contributors
+* @satmandu made their first contribution in https://github.com/actions/runner/pull/3568
 
-**Full Changelog**: https://github.com/actions/runner/compare/v2.319.1...v2.320.0
+**Full Changelog**: https://github.com/actions/runner/compare/v2.321.0...v2.322.0
 
 _Note: Actions Runner follows a progressive release policy, so the latest release might not be available to your enterprise, organization, or repository yet.
 To confirm which version of the Actions Runner you should expect, please view the download instructions for your enterprise, organization, or repository.
@@ -33,9 +39,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem ;
 [System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD\actions-runner-win-x64-<RUNNER_VERSION>.zip", "$PWD")
 ```
 
-## [Pre-release] Windows arm64
-
-**Warning:** Windows arm64 runners are currently in preview status and use [unofficial versions of nodejs](https://unofficial-builds.nodejs.org/). They are not intended for production workflows.
+## Windows arm64
 
 We recommend configuring the runner in a root folder of the Windows drive (e.g. "C:\actions-runner"). This will help avoid issues related to service identity folder permissions and long file path restrictions on Windows.
 

@@ -5,8 +5,8 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG RUNNER_VERSION
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.6.1
-ARG DOCKER_VERSION=27.3.1
-ARG BUILDX_VERSION=0.18.0
+ARG DOCKER_VERSION=27.5.1
+ARG BUILDX_VERSION=0.20.1
 
 RUN apt update -y && apt install curl unzip -y
 
@@ -112,11 +112,15 @@ RUN mkdir -p -m 755 /etc/apt/keyrings \
 #         | tee /etc/apt/sources.list.d/kubernetes.list \
 #     && chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
+# Git LFS repo
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
         gh \
         # COMMENTING OUT AS WE CAN INSTALL THIS WITH AN ACTION
         # kubectl \
+        git-lfs \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure git-core/ppa based on guidance here:  https://git-scm.com/download/linux
