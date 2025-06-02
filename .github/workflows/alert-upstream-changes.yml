@@ -17,7 +17,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
 
       - name: Configure Git
         run: | # shell
@@ -45,7 +44,7 @@ jobs:
       - name: Open PR
         id: pr
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | # shell
           getPRNumber() {
             gh pr list \
