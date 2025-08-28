@@ -45,6 +45,7 @@ RUN apt-get update -y \
         curl \
         g++ \
         gcc \
+        gettext-base \
         git \
         gnupg \
         gpg-agent \
