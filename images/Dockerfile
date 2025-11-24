@@ -59,6 +59,7 @@ RUN apt-get update -y \
         lsb-release \
         software-properties-common \
         sudo \
+        unzip \
         # Chrome
         ca-certificates \
         fonts-liberation \
