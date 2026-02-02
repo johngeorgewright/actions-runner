@@ -43,6 +43,10 @@ ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=ubuntu24
 
+# Prevent services from starting during package installation
+RUN printf '#!/bin/sh\nexit 101\n' > /usr/sbin/policy-rc.d \
+    && chmod +x /usr/sbin/policy-rc.d
+
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends \
         apt-transport-https \
@@ -59,7 +63,8 @@ RUN apt-get update -y \
         lsb-release \
         software-properties-common \
         sudo \
-        unzip
+        unzip \
+    && rm -rf /var/lib/apt/lists/*
 
 # Link default python
 RUN ln -s /usr/bin/python3 /usr/bin/python
