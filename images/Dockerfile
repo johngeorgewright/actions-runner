@@ -56,7 +56,6 @@ RUN apt-get update -y \
         jq \
         make \
         openssh-client \
-        lsb-release \
         software-properties-common \
         sudo \
         unzip \
@@ -73,7 +72,7 @@ RUN apt-get update -y \
         libexpat1 \
         libfontconfig1 \
         libgbm1 \
-        libgcc1 \
+        libgcc-s1 \
         libglib2.0-0 \
         libgtk-3-0 \
         libnspr4 \
