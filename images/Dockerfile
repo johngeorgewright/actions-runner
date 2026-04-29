@@ -36,6 +36,10 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
     "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-${TARGETARCH}" \
     && chmod +x /usr/local/lib/docker/cli-plugins/docker-buildx
 
+FROM node:lts-alpine AS global-agent
+RUN mkdir -p /opt/global-agent \
+ && npm install --prefix=/opt/global-agent --omit=dev global-agent
+
 FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-noble
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -76,6 +80,8 @@ RUN mkdir -p -m 755 /etc/apt/keyrings \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
         | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+COPY --from=global-agent /opt/global-agent /opt/global-agent
 
 # COMMENTING OUT AS WE CAN INSTALL THIS WITH AN ACTION
 # kubernetes repo
