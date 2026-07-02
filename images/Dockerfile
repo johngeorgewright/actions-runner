@@ -65,7 +65,6 @@ RUN apt-get update -y \
         make \
         openssh-client \
         lsb-release \
-        software-properties-common \
         sudo \
         unzip \
     && rm -rf /var/lib/apt/lists/*
@@ -104,9 +103,16 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure git-core/ppa based on guidance here:  https://git-scm.com/download/linux
-RUN add-apt-repository ppa:git-core/ppa \
-    && apt update -y \
-    && apt install -y git \
+# Added manually (instead of `add-apt-repository`) to avoid pulling in
+# software-properties-common, whose python3 postinst scripts segfault under
+# emulated arm64 QEMU builds.
+RUN curl -fsSL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xE1DD270288B4E6030699E45FA1715D88E1DF1F24" \
+        | gpg --dearmor -o /etc/apt/keyrings/git-core-ppa.gpg \
+    && chmod go+r /etc/apt/keyrings/git-core-ppa.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/git-core-ppa.gpg] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -cs) main" \
+        > /etc/apt/sources.list.d/git-core-ppa.list \
+    && apt-get update -y \
+    && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos "" --uid 1001 runner \
